@@ -19,8 +19,8 @@ package core
 import (
 	"context"
 	"database/sql"
+	"flag"
 	"fmt"
-	"github.com/gabriel-vasile/mimetype"
 	"net"
 	"net/http"
 	"net/url"
@@ -29,6 +29,9 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gabriel-vasile/mimetype"
+	"github.com/joho/godotenv"
 
 	"github.com/goplus/community/translation"
 	"github.com/qiniu/x/xlog"
@@ -116,6 +119,12 @@ type Translation struct {
 	VideoTaskCache *VideoTaskCache
 }
 
+func init() {
+	configFile := ""
+	flag.StringVar(&configFile, "config", "", "Path to the config file")
+	flag.Parse()
+	godotenv.Load(configFile)
+}
 func New(ctx context.Context, conf *Config) (ret *Community, err error) {
 	// Init log
 	xLog := xlog.New("")
